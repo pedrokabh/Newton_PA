@@ -1,0 +1,72 @@
+# Criando e Utilizando uma base de dados
+CREATE DATABASE DB_TESTE;
+USE DB_TESTE;
+
+#Criando Tabelas em uma Base de Dados
+create table Cargo
+(
+   Cod_Cargo               tinyint not null,
+   Nom_Cargo              varchar(100) not null,
+   Val_Salario_Base     float(15,2)
+);
+
+create table Formacao_Escolar
+(
+   Cod_Formacao           tinyint not null,
+   Nom_Formacao         varchar(100) not null
+);
+
+create table Projeto
+(
+   Cod_Projeto          smallint not null,
+   Nom_Projeto         varchar(100) not null,
+   Dta_Inicio               date not null,
+   Dta_Fim                  date
+);
+
+create table Funcionario
+(
+   Cod_Func             int not null,
+   Nom_Func            varchar(50) not null,
+   Val_Salario            float(8,2),
+   Cod_Cargo            tinyint not null,
+   Cod_Formacao     tinyint not null
+);
+
+create table Trabalha_Em
+(
+   Cod_Trabalha_Em      integer not null,
+   Cod_Func             int not null,
+   Cod_Projeto          smallint not null,
+   Num_Total_Horas      decimal(7,1)
+);
+
+#Alter collumn table 
+alter table Cargo add primary key (Cod_Cargo);
+alter table Formacao_Escolar add primary key (Cod_Formacao);
+alter table Projeto add primary key (Cod_Projeto);
+
+#Adicionando FK´s
+alter table Funcionario add constraint FK_Cargo_Funcionario foreign key (Cod_Cargo) references Cargo (Cod_Cargo);
+alter table Funcionario add constraint FK_FORMACAO_FUNCIONARIO FOREIGN KEY (Cod_Formacao) references Formacao_Escolar (Cod_Formacao);
+
+#Alterando e Inserindo Valores
+INSERT INTO CARGO (COD_CARGO, NOM_CARGO,VAL_SALARIO_BASE) VALUES (1,'Professor', 3000);
+ALTER TABLE Funcionario ADD Num_Telefone char(15) null;
+ALTER TABLE Funcionario MODIFY COLUMN Num_Telefone varchar(20) null;
+ALTER TABLE Funcionario DROP COLUMN Num_Telefone;
+ALTER TABLE Funcionario DROP constraint FK_Cargo_Funcionario;
+
+INSERT INTO CARGO (COD_CARGO, NOM_CARGO, VAL_SALARIO_BASE) VALUES (1,'Professor', 30000);
+SELECT * FROM CARGO;
+INSERT INTO FORMACAO_ESCOLAR (COD_FORMACAO, NOM_FORMACAO) VALUES (1, 'Ensino Médio');
+INSERT INTO FORMACAO_ESCOLAR (COD_FORMACAO, NOM_FORMACAO) VALUES (2, 'Ensino Superior');
+SELECT * FROM FORMACAO_ESCOLAR;
+INSERT INTO FUNCIONARIO (COD_FUNC, NOM_FUNC, VAL_SALARIO, COD_CARGO, COD_FORMACAO)VALUES (1, 'Rafaela Adriana', 30000, 1, 2);
+INSERT INTO PROJETO (COD_PROJETO, NOM_PROJETO,DTA_INICIO, DTA_FIM) VALUES (1, 'Projeto 1', '2022-12-24', NULL);
+INSERT INTO TRABALHA_EM (COD_TRABALHA_EM, COD_FUNC, COD_PROJETO,NUM_TOTAL_HORAS)VALUES (4, 1, 1, 20.1);
+INSERT INTO CARGO (COD_CARGO,NOM_CARGO,VAL_SALARIO_BASE) VALUES (2,'Supervisor',4500);
+UPDATE FUNCIONARIO SET VAL_SALARIO=3300 WHERE COD_FUNC=1;
+DELETE FROM TRABALHA_EM WHERE COD_FUNC = 2 AND COD_PROJETO=1;
+
+
